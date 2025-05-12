@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gestor-tareas": {
+    "task-manager": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/gestor-tareas",
+            "outputPath": "dist/task-manager",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "gestor-tareas:build:production"
+              "buildTarget": "task-manager:build:production"
             },
             "development": {
-              "buildTarget": "gestor-tareas:build:development"
+              "buildTarget": "task-manager:build:development"
             }
           },
           "defaultConfiguration": "development"

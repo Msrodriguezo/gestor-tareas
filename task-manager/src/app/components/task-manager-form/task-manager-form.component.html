@@ -1,9 +1,9 @@
 <div class="container mt-5">
-    <h1>Task Manager</h1>
+    <h1>Crear Tarea</h1>
     <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
       <!-- Title -->
       <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
+        <label for="title" class="form-label">Titulo</label>
         <input
           type="text"
           class="form-control"
@@ -16,7 +16,7 @@
   
       <!-- Description -->
       <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
+        <label for="description" class="form-label">Descripcion</label>
         <textarea
           class="form-control"
           id="description"
@@ -29,7 +29,21 @@
   
       <!-- Date -->
       <div class="mb-3">
-        <label for="date" class="form-label">Expiration date</label>
+        <label for="date" class="form-label">Fecha de Expiracion</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          name="date"
+          [(ngModel)]="formData.date"
+          [min]="minDate"
+          required
+        />
+      </div>
+
+       <!-- Date -->
+      <div class="mb-3">
+        <label for="date" class="form-label">Fecha de Creacion</label>
         <input
           type="date"
           class="form-control"
@@ -44,7 +58,7 @@
          
       <!-- Status -->
       <div class="mb-3">
-        <label for="status" class="form-label">Status</label>
+        <label for="status" class="form-label">Estado</label>
         <select
           class="form-select"
           id="status"

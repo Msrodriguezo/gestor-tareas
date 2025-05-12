@@ -1,5 +1,5 @@
 {
-  "name": "gestor-tareas",
+  "name": "task-manager",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:gestor-tareas": "node dist/gestor-tareas/server/server.mjs"
+    "serve:ssr:task-manager": "node dist/task-manager/server/server.mjs"
   },
   "private": true,
   "dependencies": {
