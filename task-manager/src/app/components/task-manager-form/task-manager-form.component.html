@@ -1,85 +1,85 @@
 <div class="container mt-5">
-    <h1>Crear Tarea</h1>
-    <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
-      <!-- Title -->
-      <div class="mb-3">
-        <label for="title" class="form-label">Titulo</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          [(ngModel)]="formData.title"
-          required
-        />
-      </div>
-  
-      <!-- Description -->
-      <div class="mb-3">
-        <label for="description" class="form-label">Descripcion</label>
-        <textarea
-          class="form-control"
-          id="description"
-          name="description"
-          [(ngModel)]="formData.description"
-          rows="4"
-          required
-        ></textarea>
-      </div>
-  
-      <!-- Date -->
-      <div class="mb-3">
-        <label for="date" class="form-label">Fecha de Expiracion</label>
-        <input
-          type="date"
-          class="form-control"
-          id="date"
-          name="date"
-          [(ngModel)]="formData.date"
-          [min]="minDate"
-          required
-        />
-      </div>
+  <h1>{{ isEditMode ? 'Editar Tarea' : 'Crear Tarea' }}</h1>
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+    <!-- Title -->
+    <div class="mb-3">
+      <label for="titulo" class="form-label">Titulo</label>
+      <input
+        type="text"
+        class="form-control"
+        id="titulo"
+        name="titulo"
+        [(ngModel)]="formData.titulo"
+        required
+      />
+    </div>
 
-       <!-- Date -->
-      <div class="mb-3">
-        <label for="date" class="form-label">Fecha de Creacion</label>
-        <input
-          type="date"
-          class="form-control"
-          id="date"
-          name="date"
-          [(ngModel)]="formData.date"
-          [min]="minDate"
-          required
-        />
-      </div>
-      
-         
-      <!-- Status -->
-      <div class="mb-3">
-        <label for="status" class="form-label">Estado</label>
-        <select
-          class="form-select"
-          id="status"
-          name="status"
-          [(ngModel)]="formData.status"
-          required
-        >
-          <option *ngFor="let status of statusOptions" [value]="status">
-            {{ status }}
-          </option>
-        </select>
-      </div>
-  
-      <!-- Buttons -->
-      <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">
-          Send
-        </button>
-      </div>
-    </form>
-  </div>
+    <!-- Description -->
+    <div class="mb-3">
+      <label for="descripcion" class="form-label">Descripcion</label>
+      <textarea
+        class="form-control"
+        id="descripcion"
+        name="descripcion"
+        [(ngModel)]="formData.descripcion"
+        rows="4"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Fecha de Creación -->
+    <div class="mb-3">
+      <label for="fechaCreacion" class="form-label">Fecha de Creacion</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fechaCreacion"
+        name="fechaCreacion"
+        [(ngModel)]="formData.fechaCreacion"
+        [value]="formData.fechaCreacion"
+        readonly
+      />
+    </div>
+
+
+    <!-- Fecha de Expiración -->
+    <div class="mb-3">
+      <label for="fechaLimite" class="form-label">Fecha de Expiracion</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fechaLimite"
+        name="fechaLimite"
+        [(ngModel)]="formData.fechaLimite"
+        [min]="minDate"
+        required
+      />
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <label for="estado" class="form-label">Estado</label>
+      <select
+        class="form-select"
+        id="estado"
+        name="estado"
+        [(ngModel)]="formData.estado"
+        required
+      >
+        <option *ngFor="let estado of statusOptions" [value]="estado">
+          {{ estado }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+</div>

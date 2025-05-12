@@ -1,5 +1,6 @@
 <div class="container mt-5">
   <h1>Gestor de Tareas</h1>
+
   <!-- Search Bar -->
   <div class="mb-3">
     <input
@@ -20,89 +21,70 @@
     </button>
   </div>
 
-  <!-- Table Task -->
-  <div class="row g-3">
-    <!-- Column To Do -->
-    <div class="col-md-3">
-      <div class="h-100 p-3 bg-light border rounded-3">
-        <h5 class="text-center mb-3">Para Hacer</h5>
-        <ng-container *ngFor="let task of filteredTasks()">
-          <div
-            *ngIf="task.status === 'To Do'"
-            class="card mb-3"
-            [class.border-primary]="selectedTasks.has(task.id)"
-            (click)="toggleTaskSelection(task.id)"
-          >
-            <div class="card-body">
-              <h5 class="card-title">{{ task.title }}</h5>
-              <h6 class="card-text">{{ task.description }}</h6>
-              <p class="card-text">Date: {{ task.date }}</p>
+  <!-- Table Task (centrada) -->
+  <div class="d-flex justify-content-center">
+    <div class="row g-3 w-100" style="max-width: 1140px;">
+      <!-- Column To Do -->
+      <div class="col-md-4">
+        <div class="h-100 p-3 bg-light border rounded-3">
+          <h5 class="text-center mb-3">Para Hacer</h5>
+          <ng-container *ngFor="let task of filteredTasks()">
+            <div
+              *ngIf="task.estado === 'PENDIENTE'"
+              class="card mb-3"
+              [class.border-primary]="selectedTasks.has(task.id!)"
+              (click)="toggleTaskSelection(task.id)"
+            >
+              <div class="card-body">
+                <h5 class="card-title">{{ task.titulo }}</h5>
+                <h6 class="card-text">{{ task.descripcion }}</h6>
+                <p class="card-text">Vence: {{ task.fechaLimite }}</p>
+              </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
-    </div>
 
-    <!-- Column In Progress -->
-    <div class="col-md-3">
-      <div class="h-100 p-3 bg-light border rounded-3">
-        <h5 class="text-center mb-3">En progreso</h5>
-        <ng-container *ngFor="let task of filteredTasks()">
-          <div
-            *ngIf="task.status === 'In Progress'"
-            class="card mb-3"
-            [class.border-primary]="selectedTasks.has(task.id)"
-            (click)="toggleTaskSelection(task.id)"
-          >
-            <div class="card-body">
-              <h5 class="card-title">{{ task.title }}</h5>
-              <h6 class="card-text">{{ task.description }}</h6>
-              <p class="card-text">Date: {{ task.date }}</p>
+      <!-- Column In Progress -->
+      <div class="col-md-4">
+        <div class="h-100 p-3 bg-light border rounded-3">
+          <h5 class="text-center mb-3">En progreso</h5>
+          <ng-container *ngFor="let task of filteredTasks()">
+            <div
+              *ngIf="task.estado === 'EN_PROGRESO'"
+              class="card mb-3"
+              [class.border-primary]="selectedTasks.has(task.id!)"
+              (click)="toggleTaskSelection(task.id)"
+            >
+              <div class="card-body">
+                <h5 class="card-title">{{ task.titulo }}</h5>
+                <h6 class="card-text">{{ task.descripcion }}</h6>
+                <p class="card-text">Vence: {{ task.fechaLimite }}</p>
+              </div>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
-    </div>
 
-    <!-- Column Done -->
-    <div class="col-md-3">
-      <div class="h-100 p-3 bg-light border rounded-3">
-        <h5 class="text-center mb-3">Realizada</h5>
-        <ng-container *ngFor="let task of filteredTasks()">
-          <div
-            *ngIf="task.status === 'Done'"
-            class="card mb-3"
-            [class.border-primary]="selectedTasks.has(task.id)"
-            (click)="toggleTaskSelection(task.id)"
-          >
-            <div class="card-body">
-              <h5 class="card-title">{{ task.title }}</h5>
-              <h6 class="card-text">{{ task.description }}</h6>
-              <p class="card-text">Date: {{ task.date }}</p>
+      <!-- Column Done -->
+      <div class="col-md-4">
+        <div class="h-100 p-3 bg-light border rounded-3">
+          <h5 class="text-center mb-3">Realizada</h5>
+          <ng-container *ngFor="let task of filteredTasks()">
+            <div
+              *ngIf="task.estado === 'COMPLETADO'"
+              class="card mb-3"
+              [class.border-primary]="selectedTasks.has(task.id!)"
+              (click)="toggleTaskSelection(task.id)"
+            >
+              <div class="card-body">
+                <h5 class="card-title">{{ task.titulo }}</h5>
+                <h6 class="card-text">{{ task.descripcion }}</h6>
+                <p class="card-text">Vence: {{ task.fechaLimite }}</p>
+              </div>
             </div>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- Column Overdue -->
-    <div class="col-md-3">
-      <div class="h-100 p-3 bg-light border rounded-3">
-        <h5 class="text-center mb-3">Tareas Vencidas</h5>
-        <ng-container *ngFor="let task of filteredTasks()">
-          <div
-            *ngIf="isOverdue(task.date) && task.status !== 'Done'"
-            class="card mb-3"
-            [class.border-primary]="selectedTasks.has(task.id)"
-            (click)="toggleTaskSelection(task.id)"
-          >
-            <div class="card-body">
-              <h5 class="card-title">{{ task.title }}</h5>
-              <h6 class="card-text">{{ task.description }}</h6>
-              <p class="card-text">Date: {{ task.date }}</p>
-            </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

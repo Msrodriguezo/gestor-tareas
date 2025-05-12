@@ -1,116 +1,102 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'; // Importar ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TaskStatus } from '../../interfaces/status.interface';
-import { Task } from '../../interfaces/task.interface';
+import { TaskDTO } from '../../interfaces/task.interface';
+import { TaskManagerServiceService } from '../../services/task-manager-service.service';
 
 @Component({
   selector: 'app-task-manager-form',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './task-manager-form.component.html',
-  styleUrl: './task-manager-form.component.scss',
+  styleUrls: ['./task-manager-form.component.scss'],
 })
 export class TaskManagerFormComponent implements OnInit {
-  formData: Task = {
-    id: 0,
-    title: '',
-    description: '',
-    date: '',
-    status: 'To Do',
+  formData: TaskDTO = {
+    titulo: '',
+    descripcion: '',
+    estado: 'PENDIENTE',
+    fechaCreacion: '',
+    fechaLimite: ''
   };
 
-  statusOptions: TaskStatus[] = ['To Do', 'In Progress', 'Done'];
+  statusOptions: TaskDTO['estado'][] = ['PENDIENTE', 'EN_PROGRESO', 'COMPLETADO'];
   isEditMode = false;
   minDate: string = '';
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: TaskManagerServiceService
   ) {}
 
   ngOnInit(): void {
-
     this.calculateMinDate();
     const taskId = this.route.snapshot.paramMap.get('id');
+
     if (taskId) {
       this.isEditMode = true;
-      this.loadTaskForEdit(Number(taskId));
-      if (this.formData.status === 'Overdue') {
-        this.statusOptions.push('Overdue');
-      }
+      this.taskService.getTaskById(Number(taskId)).subscribe({
+        next: (task: TaskDTO) => {
+          this.formData = {
+            id: task.id,
+            titulo: task.titulo,
+            descripcion: task.descripcion,
+            estado: task.estado,
+            fechaCreacion: task.fechaCreacion || '',
+            fechaLimite: task.fechaLimite || ''
+          };
+        },
+        error: (err: any) => console.error('Error al cargar la tarea:', err)
+      });
+    } else {
+      const today = new Date();
+      this.formData.fechaCreacion = today.toISOString().split('T')[0]; // Solo la parte de la fecha (YYYY-MM-DD)
     }
   }
 
-  //Calculate minimum date
   calculateMinDate() {
     const today = new Date();
     const year = today.getFullYear();
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     this.minDate = `${year}-${month}-${day}`;
-  
   }
 
-  // Get tasks from LocalStorage
-  getTasksFromLocalStorage(): Task[] {
-    const tasksJson = localStorage.getItem('tasks');
-    return tasksJson ? JSON.parse(tasksJson) : [];
-  }
-
-  // Load task for edit
-  loadTaskForEdit(taskId: number) {
-    const tasks = this.getTasksFromLocalStorage();
-    const task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      this.formData = { ...task };
-    }
-  }
-
-  // Save tasks to LocalStorage
-  saveTasksToLocalStorage(tasks: Task[]) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
-
-  // Generate a unique task ID
-  generateTaskId(tasks: Task[]): number {
-    return tasks.length > 0 ? Math.max(...tasks.map((t) => t.id)) + 1 : 1;
-  }
-
-  //Submit form
   onSubmit() {
-    const tasks = this.getTasksFromLocalStorage();
+    const dto: TaskDTO = {
+      titulo: this.formData.titulo,
+      descripcion: this.formData.descripcion,
+      estado: this.formData.estado,
+      fechaCreacion: this.formData.fechaCreacion,
+      fechaLimite: this.formData.fechaLimite
+    };
 
-    if (this.isEditMode) {
-      // Edit existing task
-      const index = tasks.findIndex((t) => t.id === this.formData.id);
-      if (index !== -1) {
-        tasks[index] = { ...this.formData }; // Update the task
-      }
+    if (this.isEditMode && this.formData.id) {
+      this.taskService.updateTask(this.formData.id, dto).subscribe({
+        next: () => this.router.navigate(['/task-table']),
+        error: (err: any) => console.error('Error al actualizar la tarea:', err)
+      });
     } else {
-      // Create new task
-      this.formData.id = this.generateTaskId(tasks); // Assign a unique ID
-      tasks.push({ ...this.formData }); // Save the new task
+      this.taskService.createTask(dto).subscribe({
+        next: () => this.router.navigate(['/task-table']),
+        error: (err: any) => console.error('Error al crear la tarea:', err)
+      });
     }
-
-    this.saveTasksToLocalStorage(tasks); // Save tasks to LocalStorage
-    this.router.navigate(['/task-table']); // navigate to task table
   }
 
-  // Cancel form
   onCancel() {
     this.router.navigate(['/task-table']);
   }
 
-  // Reset Form Data
   resetForm() {
     this.formData = {
-      id: 0,
-      title: '',
-      description: '',
-      date: '',
-      status: 'To Do',
+      titulo: '',
+      descripcion: '',
+      estado: 'PENDIENTE',
+      fechaCreacion: '',
+      fechaLimite: ''
     };
   }
 }
