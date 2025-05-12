@@ -1,8 +1,0 @@
-com\taskmanager\taskmanager\repository\TaskRepository.class
-com\taskmanager\taskmanager\dto\TaskDTO.class
-com\taskmanager\taskmanager\model\TaskStatus.class
-com\taskmanager\taskmanager\controller\TaskController.class
-com\taskmanager\taskmanager\mapper\TaskMapper.class
-com\taskmanager\taskmanager\model\Task.class
-com\taskmanager\taskmanager\TaskManagerApplication.class
-com\taskmanager\taskmanager\service\TaskService.class
